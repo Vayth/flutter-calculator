@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calculator/core/colors.dart';
+import 'package:flutter_calculator/core/enums.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/providers/calculator_provider.dart';
 
 class Button extends ConsumerWidget {
-  static const _defaultColor = Color.fromARGB(255, 30, 30, 30);
   static const _defaultTextColor = Colors.white;
 
-  final Color? color;
   final Color? textColor;
   final String text;
   final Widget icon;
+  final int buttonType;
   final void Function()? buttontapped;
 
   const Button({
-    this.color = _defaultColor,
     this.textColor = _defaultTextColor,
     this.text = "",
     this.icon = const SizedBox.shrink(),
+    this.buttonType = ButtonType.number,
     this.buttontapped,
     Key? key,
   }) : super(key: key);
@@ -46,7 +47,7 @@ class Button extends ConsumerWidget {
           borderRadius: BorderRadius.circular(5),
           child: Container(
             constraints: const BoxConstraints(maxHeight: 20, maxWidth: 20),
-            color: color,
+            color: getColor(context, buttonType),
             child: Center(
               child: content,
             ),
@@ -54,5 +55,14 @@ class Button extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Color getColor(BuildContext context, int buttonType) {
+    switch (buttonType) {
+      case ButtonType.number:
+        return Theme.of(context).colorScheme.numberButton;
+      default:
+        return Colors.transparent;
+    }
   }
 }
